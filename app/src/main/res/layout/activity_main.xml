@@ -4,11 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-<luwei.com.customview.FlowLayout
-    android:id="@+id/fl"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-</luwei.com.customview.FlowLayout>
+    <luwei.com.customview.FlowLayout
+        android:id="@+id/fl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </luwei.com.customview.FlowLayout>
+
+    <luwei.com.customview.CustomLineChart
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

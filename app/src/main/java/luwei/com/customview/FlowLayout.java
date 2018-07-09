@@ -1,4 +1,5 @@
 package luwei.com.customview;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -115,11 +116,10 @@ public class FlowLayout extends ViewGroup {
         }
     }
 
+    // 添加标签数据
     public void addTexts(List<String> list) {
         if (list == null || list.size() == 0)
             throw new IllegalArgumentException("need a string list ");
         this.list = list;
     }
-
-
 }
