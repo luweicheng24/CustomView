@@ -2,11 +2,13 @@ package luwei.com.customview;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -23,9 +25,9 @@ public class CustomCircleWave extends View {
     private Paint mPaint; //基本画笔
     private Paint textPaint; //文字画笔
     private Path path; //路径
-    private int mWidth = 500;//DimentionUtils.px2Dp(getContext(), 50); //默认的view的宽度
-    private int mHeight = 500;//DimentionUtils.px2Dp(getContext(), 50);//默认view的高度
-    private int textSize =50;// DimentionUtils.px2Sp(getContext(), 10);//默认文字的大小
+    private int mWidth = DisplayUtils.px2Dp(getContext(), 50); //默认的view的宽度
+    private int mHeight = DisplayUtils.px2Dp(getContext(), 50);//默认view的高度
+    private int textSize = DisplayUtils.px2Sp(getContext(), 10);//默认文字的大小
     private String content = "卢";//文字内容
     private float curPercent; //波浪线水平移动的速率
     private int color; //文字颜色(默认颜色为红色)
@@ -35,11 +37,11 @@ public class CustomCircleWave extends View {
         this(context, null);
     }
 
-    public CustomCircleWave(Context context,  AttributeSet attrs) {
+    public CustomCircleWave(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CustomCircleWave(Context context,  AttributeSet attrs, int defStyleAttr) {
+    public CustomCircleWave(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }
@@ -68,10 +70,10 @@ public class CustomCircleWave extends View {
      * @param attr
      */
     private void init(AttributeSet attr) {
-     /*   TypedArray arr = getContext().obtainStyledAttributes(attr, R.styleable.WaveLoadCircle);
+        TypedArray arr = getContext().obtainStyledAttributes(attr, R.styleable.WaveLoadCircle);
         //自定义颜色和文字，默认蓝色
-      //  int c = arr.getColor(R.styleable.WaveLoadCircle_color, Color.BLUE);
-      //  String text = arr.getString(R.styleable.WaveLoadCircle_text);
+        int c = arr.getColor(R.styleable.WaveLoadCircle_color, Color.BLUE);
+        String text = arr.getString(R.styleable.WaveLoadCircle_text);
         if (c != 0) {
             Log.i("tag", "init:color " + c);
             color = c;
@@ -81,13 +83,13 @@ public class CustomCircleWave extends View {
             Log.i("tag", "init:text " + text);
 
         }
-        arr.recycle();//回收资源*/
+        arr.recycle();//回收资源
 
         //初始化画笔
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);//去除锯齿
         mPaint.setDither(true);
         mPaint.setStyle(Paint.Style.FILL);//填充
-        mPaint.setColor(Color.GRAY);
+        mPaint.setColor(color);
 
         //初始化文字画笔
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);//反锯齿标志
@@ -121,7 +123,7 @@ public class CustomCircleWave extends View {
     protected void onDraw(Canvas canvas) {
         //画底部的文字
         textPaint.setColor(color);
-        drawCentertext(canvas, textPaint);
+        drawCenterText(canvas, textPaint);
         // 获取path路径为一个上边为贝塞尔曲线的矩形
         path = getWavePath(curPercent);
         Log.i("tag", "onDraw:percent " + curPercent);
@@ -129,11 +131,9 @@ public class CustomCircleWave extends View {
         canvas.clipPath(path);
         // 画圆
         canvas.drawCircle(mWidth / 2, mHeight / 2, mWidth / 2, mPaint);
-        textPaint.setColor(Color.BLUE);
+        textPaint.setColor(Color.WHITE);
         // 再画一个颜色与上面字体颜色不一样的字
-        drawCentertext(canvas, textPaint);
-        postInvalidate();
-        invalidate();
+        drawCenterText(canvas, textPaint);
     }
     //在画板中部画字
 
@@ -143,7 +143,7 @@ public class CustomCircleWave extends View {
      * @param canvas
      * @param paint
      */
-    private void drawCentertext(Canvas canvas, Paint paint) {
+    private void drawCenterText(Canvas canvas, Paint paint) {
         Rect rect = new Rect(0, 0, mWidth, mHeight);
         paint.setTextAlign(Paint.Align.CENTER);
         Paint.FontMetrics pf = paint.getFontMetrics();
